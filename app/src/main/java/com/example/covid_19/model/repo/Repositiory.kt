@@ -8,6 +8,7 @@ import com.example.covid_19.model.local.DAO
 import com.example.covid_19.model.local.DBHandeller
 import com.example.covid_19.model.local.CountryData
 import com.example.covid_19.model.remote.*
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -19,8 +20,10 @@ class Repositiory(application: Application) {
     private var countryResponse = CountryResponse()
     private val factory = RetrofitFactory.instance
     private var firstDispose = CompositeDisposable()
-    private var secondDispose = CompositeDisposable()
+    private var allCountryDispose = CompositeDisposable()
 
+    private var worldData: WorldData = WorldData("", "", "")
+    val requests = ArrayList<Observable<*>>()
 
     init {
         val db = DBHandeller.getDatabase(application)
@@ -28,7 +31,7 @@ class Repositiory(application: Application) {
     }
 
     //Room operations
-    fun getCountriesLocal(): CountryResponse{
+    fun getCountriesLocal(): CountryResponse {
         runBlocking<Unit> {
             launch { getCountriesBG() }
         }
@@ -67,32 +70,30 @@ class Repositiory(application: Application) {
 
     //Retrofit operations
     //world data
-    fun getWorldState():CountryResponse {
+    fun getWorldState(): WorldData? {
         firstDispose.add(
             factory.api.getWorldData()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.newThread())
                 .subscribe(this::handleWorldResponse)
                 {
-                    countryResponse.error = NETWORK_ERROR_MSG
+                    print(NETWORK_ERROR_MSG)
                 }
         )
-        return countryResponse
+        return worldData
     }
 
     fun handleWorldResponse(data: WorldData) {
-       var country = Country("world","",data.total_cases,data.total_recovered,data.total_deaths)
-       setCountry(country.toDBData())
-       countryResponse.list?.add(country.toDBData())
+        worldData = data
         firstDispose.clear()
     }
 
     //countries data
     fun getCountriesState(): List<Country>? {
-        secondDispose.add(
+        allCountryDispose.add(
             factory.api.getAllCountries()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.newThread())
                 .subscribe(this::handleResponse)
                 {
                     countryResponse.error = NETWORK_ERROR_MSG
@@ -109,11 +110,11 @@ class Repositiory(application: Application) {
         list?.let {
             deleteAllCountries()
             for (item in it) {
-                if(!item.country_name.equals(""))
-                setCountry(item.toDBData())
+                if (!item.country_name.equals(""))
+                    setCountry(item.toDBData())
             }
         }
-        secondDispose.clear()
+        allCountryDispose.clear()
     }
 
     //exchange

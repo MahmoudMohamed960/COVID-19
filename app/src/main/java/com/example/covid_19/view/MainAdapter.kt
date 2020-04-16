@@ -20,7 +20,7 @@ class MainAdapter(context: Context, list: List<CountryData>) :
     }
 
     override fun getItemCount(): Int {
-        return list.size-1
+        return list.size
     }
 
 

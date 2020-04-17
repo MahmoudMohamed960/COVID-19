@@ -129,7 +129,7 @@ class MainActivity : AppCompatActivity() {
             var world = WorldData(data!!.get(0), data!!.get(1), data!!.get(2))
             setData(world)
         }
-        if (worldData.equals("")) {
+        else {
             viewModel?.worldResponse?.observe(this, Observer { response ->
                 setData(response)
                 var editor = sharedPref?.edit()

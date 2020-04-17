@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.example.covid_19.model.remote.Country
 
 @Dao
 interface DAO {
@@ -15,4 +16,6 @@ interface DAO {
 
     @Query("DELETE FROM world_table")
     fun deleteAll()
+    @Query("SELECT * FROM world_table WHERE country_name= :name")
+    fun getCountry(name: String):Country
 }

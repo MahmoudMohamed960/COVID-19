@@ -11,13 +11,17 @@ import androidx.lifecycle.Observer
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.example.covid_19.R
+import com.example.covid_19.model.local.DBHandeller
 import com.example.covid_19.model.remote.BaseSubscripe
+import com.example.covid_19.model.remote.Country
 import com.example.covid_19.model.remote.RetrofitFactory
 import com.example.covid_19.model.remote.Subscripe
 import com.example.covid_19.model.repo.Repositiory
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.*
+import java.util.concurrent.TimeUnit
 
 public class NotificationWorker(context: Context, pram: WorkerParameters) : Worker(context, pram) {
     private var context = context
@@ -25,13 +29,31 @@ public class NotificationWorker(context: Context, pram: WorkerParameters) : Work
     private var factory = RetrofitFactory.instance
     private var channelID = "ID"
     private var channelName = "name"
+    private var countryData: Country? = null
     override fun doWork(): Result {
-         getSpecificCountryState("Egypt")
-
+        getCountryData("Egypt")
+        getSpecificCountryState("Egypt")
         return Result.success()
     }
 
-    //get data about specific country
+    private fun getCountryData(name: String) = runBlocking<Unit> {
+        launch {
+            getCountryLocal(name)
+        }
+    }
+
+    //get data about specific country local
+    private suspend fun getCountryLocal(name: String) {
+        withContext(Dispatchers.IO)
+        {
+            var handler = DBHandeller.getDatabase(context)
+            delay(2000)
+            countryData = handler?.countryDao()?.getCountry(name)
+        }
+
+    }
+
+    //get data about specific country remote
     fun getSpecificCountryState(cName: String) {
         specificCountryDispose.add(
             factory.api.getSpecificCountry(cName)
@@ -48,9 +70,8 @@ public class NotificationWorker(context: Context, pram: WorkerParameters) : Work
     }
 
     fun getCountryRequet(data: BaseSubscripe) {
-        var subscripe = Subscripe("Egypt", "100", "30", "1000", "1")
         var model = data.latest_stat_by_country.get(0)
-        if (model != subscripe)
+        if (model != countryData?.toSubscripe())
             showNotification(model)
         specificCountryDispose.clear()
     }
@@ -69,4 +90,13 @@ public class NotificationWorker(context: Context, pram: WorkerParameters) : Work
             .setSmallIcon(R.drawable.ic_death)
         notification.notify(1, builder.build())
     }
+
+    //exchange
+    fun Country.toSubscripe() = Subscripe(
+        country_name = country_name,
+        new_cases = new_cases,
+        total_deaths = deaths,
+        total_recovered = total_recovered,
+        active_cases = active_cases
+    )
 }

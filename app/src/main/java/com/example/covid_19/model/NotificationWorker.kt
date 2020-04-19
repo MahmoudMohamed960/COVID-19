@@ -123,7 +123,7 @@ public class NotificationWorker(context: Context, pram: WorkerParameters) : Work
         var builder = NotificationCompat.Builder(context, channelID)
             .setContentText("new data about ${data.country_name}: new cases ${data.new_cases} ,recoverd ${data.total_recovered} ,death ${data.total_deaths} ")
             .setContentTitle("Covid-19")
-            .setSmallIcon(R.drawable.ic_death)
+            .setSmallIcon(R.drawable.corona)
             .setSound(ring)
             .setContentIntent(intent)
         notification.notify(1, builder.build())

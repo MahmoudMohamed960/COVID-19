@@ -120,6 +120,13 @@
             android:layout_marginRight="5dp"
             android:layout_alignParentRight="true"/>
     </RelativeLayout>
-
+    <ImageView
+        android:id="@+id/subscribe_icon"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/ic_subscriptions18dp"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        />
 </LinearLayout>
 </androidx.cardview.widget.CardView>

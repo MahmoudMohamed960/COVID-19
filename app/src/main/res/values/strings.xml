@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">COVID-19</string>
+    <string name="alretDlaog_title">Subscribe Country</string>
+    <string name="alretDlaog_msg">Do you want to subscribe this country ?</string>
 </resources>

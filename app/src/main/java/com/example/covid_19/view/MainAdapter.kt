@@ -4,10 +4,14 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
+import com.example.covid_19.Constants.Companion.SHARED_PREF
+import com.example.covid_19.Constants.Companion.SUBSCRIBE_COUNTRY
+import com.example.covid_19.Constants.Companion.SUBSCRIBE_COUNTRY_POS
 import com.example.covid_19.R
 import com.example.covid_19.model.local.CountryData
-import kotlinx.android.synthetic.main.countery_item.view.*
+import kotlinx.android.synthetic.main.country_item.view.*
 
 class MainAdapter(context: Context, list: List<CountryData>) :
     RecyclerView.Adapter<MainAdapter.ViewHolder>() {
@@ -15,7 +19,7 @@ class MainAdapter(context: Context, list: List<CountryData>) :
     var list = list
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(context)
-        val view = inflater.inflate(R.layout.countery_item, parent, false)
+        val view = inflater.inflate(R.layout.country_item, parent, false)
         return ViewHolder(view)
     }
 
@@ -31,7 +35,24 @@ class MainAdapter(context: Context, list: List<CountryData>) :
         holder.itemView.confirmed_cases.text = model.active_cases
         holder.itemView.death_cases.text = model.deaths
         holder.itemView.new_cases.text = model.new_cases
-}
+        holder.itemView.subscribe_icon.setOnClickListener {
+            val builder = AlertDialog.Builder(context)
+            builder.setTitle(context.resources.getString(R.string.alretDlaog_title))
+            builder.setMessage(context.resources.getString(R.string.alretDlaog_msg))
+            builder.setPositiveButton("Yes") { dialogInterface, which ->
+                val sharedPref = context.getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE)
+                var editor = sharedPref.edit()
+                editor.putString(SUBSCRIBE_COUNTRY, model.country_name)
+                editor.putInt(SUBSCRIBE_COUNTRY_POS,position)
+                editor.apply()
+            }
+            builder.setNegativeButton("No") { dialogInterface, which ->
+            }
+            val alertDialog: AlertDialog = builder.create()
+            alertDialog.setCancelable(false)
+            alertDialog.show()
+        }
+    }
 
-class ViewHolder(view: View) : RecyclerView.ViewHolder(view)
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view)
 }

@@ -2,7 +2,9 @@ package com.example.covid_19.model.repo
 
 
 import android.app.Application
+import androidx.lifecycle.MutableLiveData
 import com.example.covid_19.Constants.Companion.NETWORK_ERROR_MSG
+import com.example.covid_19.Constants.Companion.NETWORK_TIME_OUT_MSG
 import com.example.covid_19.model.local.CountryResponse
 import com.example.covid_19.model.local.DAO
 import com.example.covid_19.model.local.DBHandeller
@@ -13,6 +15,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.*
+import java.util.concurrent.TimeUnit
 
 class Repositiory(application: Application) {
     private var countryDAO: DAO?
@@ -21,8 +24,7 @@ class Repositiory(application: Application) {
     private val factory = RetrofitFactory.instance
     private var firstDispose = CompositeDisposable()
     private var allCountryDispose = CompositeDisposable()
-
-    private var worldData: WorldData = WorldData("", "", "")
+    var worldResponse = WorldData("0", "0", "0")
     val requests = ArrayList<Observable<*>>()
 
     init {
@@ -74,35 +76,32 @@ class Repositiory(application: Application) {
         firstDispose.add(
             factory.api.getWorldData()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.newThread())
+                .subscribeOn(Schedulers.io())
                 .subscribe(this::handleWorldResponse)
                 {
                     print(NETWORK_ERROR_MSG)
                 }
         )
-        return worldData
+        return worldResponse
     }
 
     fun handleWorldResponse(data: WorldData) {
-        worldData = data
+        worldResponse = data
         firstDispose.clear()
     }
 
     //countries data
-    fun getCountriesState(): List<Country>? {
+    fun getCountriesState() {
         allCountryDispose.add(
             factory.api.getAllCountries()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.newThread())
+                .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponse)
                 {
                     countryResponse.error = NETWORK_ERROR_MSG
                     countryResponse.list = null
                 }
-
-
         )
-        return list
     }
 
     fun handleResponse(data: Base) {

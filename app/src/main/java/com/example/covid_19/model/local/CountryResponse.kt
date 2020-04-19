@@ -1,7 +1,8 @@
 package com.example.covid_19.model.local
 
 
-class CountryResponse {
+
+class CountryResponse{
      var list: MutableList<CountryData>?=null
         get() {
             return field

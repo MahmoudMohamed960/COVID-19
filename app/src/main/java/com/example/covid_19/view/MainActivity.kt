@@ -1,26 +1,28 @@
 package com.example.covid_19.view
 
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
-import android.opengl.Visibility
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.work.*
+import com.example.covid_19.Constants
+import com.example.covid_19.Constants.Companion.SETTING_INTENT
 import com.example.covid_19.Constants.Companion.WORLD_DATA
 import com.example.covid_19.R
 import com.example.covid_19.model.NotificationWorker
+import com.example.covid_19.model.local.CountryResponse
 import com.example.covid_19.model.remote.WorldData
 import com.example.covid_19.view_model.MainViewModel
+import com.google.gson.GsonBuilder
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.internal.synchronized
 import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity() {
@@ -28,6 +30,7 @@ class MainActivity : AppCompatActivity() {
     var adapter: MainAdapter? = null
     var sharedPref: SharedPreferences? = null
     var worldData: String? = null
+    var responseObj :CountryResponse?= null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,7 +40,7 @@ class MainActivity : AppCompatActivity() {
         //register view model to activity
         viewModel = ViewModelProviders.of(this)[MainViewModel::class.java]
         //shared prefrence
-        sharedPref = this.getPreferences(Context.MODE_PRIVATE)
+        sharedPref = this.getSharedPreferences(Constants.SHARED_PREF, Context.MODE_PRIVATE)
         worldData = sharedPref?.getString(WORLD_DATA, "")
         //get countries cases
         progressBar.visibility = View.VISIBLE
@@ -47,7 +50,9 @@ class MainActivity : AppCompatActivity() {
             override fun onRefresh() {
                 var editor = sharedPref?.edit()
                 editor?.putString(WORLD_DATA, "")
-                viewModel?.getRemoteData()
+                editor?.apply()
+                requestCountriesCases()
+                requestWorldCases()
             }
 
         })
@@ -59,8 +64,17 @@ class MainActivity : AppCompatActivity() {
                 R.color.mainColor
             )
         )
+    //go to setting activity
+    setting_icon.setOnClickListener { goToSetting()}
 
 
+    }
+
+    private fun goToSetting() {
+       var go = Intent(this,SettingActivity::class.java)
+       var jsonString = GsonBuilder().create().toJson(responseObj)
+        go.putExtra(SETTING_INTENT,jsonString)
+        startActivity(go)
     }
 
     //update data by work manager
@@ -97,8 +111,10 @@ class MainActivity : AppCompatActivity() {
 
         viewModel?.getLocalData()?.observe(this, Observer { response ->
             if (response.list != null) {
-                if (response.list!!.size == 0)
+                if (response.list!!.size == 0) {
                     viewModel?.getRemoteData()
+                    viewModel?.getLocalData()
+                }
                 swip_refresh.setColorSchemeColors(
                     ContextCompat.getColor(
                         applicationContext,
@@ -113,6 +129,7 @@ class MainActivity : AppCompatActivity() {
                 country_list.layoutManager = LinearLayoutManager(this)
                 country_list.hasFixedSize()
                 stopProgress()
+                responseObj = response
 
             }
             if (response.error != null) {
@@ -128,9 +145,8 @@ class MainActivity : AppCompatActivity() {
             var data = worldData?.split("/")
             var world = WorldData(data!!.get(0), data!!.get(1), data!!.get(2))
             setData(world)
-        }
-        else {
-            viewModel?.worldResponse?.observe(this, Observer { response ->
+        } else {
+            viewModel?.getRemoteData()?.observe(this, Observer { response ->
                 setData(response)
                 var editor = sharedPref?.edit()
                 var data =

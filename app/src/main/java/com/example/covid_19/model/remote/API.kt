@@ -14,6 +14,6 @@ interface API {
     fun getWorldData() : Observable<WorldData>
     @Headers("x-rapidapi-key:0e56c0a4c3msh6268a2ad230fa45p11a6d1jsnde4c75363434")
     @GET("latest_stat_by_country.php?")
-    fun getSpecificCountry(@Query("country")country:String) : Observable<BaseSubscripe>
+    fun getSpecificCountry(@Query("country")country:String) : Observable<BaseSubscribe>
 
 }

@@ -10,4 +10,15 @@
     <style name="dialog" parent="Theme.AppCompat.Light.Dialog">
         <item name="windowNoTitle">true</item>
     </style>
+    <style name="HeadingTextStyle">
+        <item name="android:fontFamily">"@font/montserrat_medium"</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/light_grey</item>
+    </style>
+
+    <style name="ClickableView">
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:background">?android:attr/selectableItemBackgroundBorderless</item>
+    </style>
 </resources>

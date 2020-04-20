@@ -31,17 +31,23 @@ class MainActivity : AppCompatActivity() {
     var sharedPref: SharedPreferences? = null
     var worldData: String? = null
     var responseObj :CountryResponse?= null
+    var time :Int?= null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        //setup work manager
-        setupWorkManaager()
+
         //register view model to activity
         viewModel = ViewModelProviders.of(this)[MainViewModel::class.java]
         //shared prefrence
         sharedPref = this.getSharedPreferences(Constants.SHARED_PREF, Context.MODE_PRIVATE)
         worldData = sharedPref?.getString(WORLD_DATA, "")
+        //get interval
+         time = sharedPref?.getInt(Constants.TIME_INTERVAL,1)
+
+        //setup work manager
+        setupWorkManaager()
+
         //get countries cases
         progressBar.visibility = View.VISIBLE
         requestCountriesCases()
@@ -92,7 +98,7 @@ class MainActivity : AppCompatActivity() {
         .build()
 
     fun createWorkRequest(data: Data) =
-        PeriodicWorkRequestBuilder<NotificationWorker>(15, TimeUnit.MINUTES)
+        PeriodicWorkRequestBuilder<NotificationWorker>(time!!.toLong(), TimeUnit.MINUTES)
             // set input data for the work
             .setInputData(data)
             .setConstraints(createConstraints())
@@ -173,7 +179,7 @@ class MainActivity : AppCompatActivity() {
     private fun setData(data: WorldData) {
         death_cases_World.text = data.total_deaths
         confirmed_cases_World.text = data.total_cases
-        recoverd_cases_World.text = data.total_recovered
+        recovered_cases_World.text = data.total_recovered
     }
 
 }

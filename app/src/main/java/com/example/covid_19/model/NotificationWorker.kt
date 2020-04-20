@@ -26,7 +26,7 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.*
 import kotlin.random.Random
 
-public class NotificationWorker(context: Context, pram: WorkerParameters) : Worker(context, pram) {
+ class NotificationWorker(context: Context, pram: WorkerParameters) : Worker(context, pram) {
     private var context = context
     private var specificCountryDispose = CompositeDisposable()
     private var firstDispose = CompositeDisposable()
@@ -79,7 +79,7 @@ public class NotificationWorker(context: Context, pram: WorkerParameters) : Work
 
     fun getCountryRequet(data: BaseSubscribe) {
         var model = data.latest_stat_by_country.get(0)
-      //  if (model != countryData?.toSubscribe() && !model.new_cases.equals(""))
+      if (model != countryData?.toSubscribe() && !model.new_cases.equals(""))
             getWorldState()
             showNotification(model)
         specificCountryDispose.clear()

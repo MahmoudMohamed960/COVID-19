@@ -7,4 +7,17 @@
     <color name="redColor">#F40606</color>
     <color name="greenColor">#93ED2A</color>
     <color name="blaclk">#000000</color>
+
+    <color name="yellow">#FFD900</color>
+    <color name="red">#F02A2A</color>
+    <color name="green">#22A981</color>
+    <color name="light_grey">#949BAA</color>
+    <color name="dark_blue">#030E25</color>
+
+    <color name="black">#000000</color>
+    <color name="white">#ffffff</color>
+
+    <color name="search_bar_color">#CDD0D4</color>
+    <color name="toolbar_color">#3E4A62</color>
+    <color name="bottom_nav_color">#142443</color>
 </resources>

@@ -11,9 +11,10 @@
         android:roundIcon="@drawable/corona"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.CountryActivity"
-            android:theme="@style/dialog"
-            ></activity>
+        <activity android:name=".view.ChartActivity"></activity>
+        <activity
+            android:name=".view.CountryActivity"
+            android:theme="@style/dialog" />
         <activity
             android:name=".view.SettingActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />

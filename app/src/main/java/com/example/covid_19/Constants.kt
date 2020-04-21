@@ -12,6 +12,6 @@ class Constants {
         val SHARED_PREF ="prefrence"
         val SETTING_INTENT="setting"
         val TIME_INTERVAL="time"
-        val NOTIFICTION_FLAG ="notification"
+        val CHART_INTENT ="chart"
     }
 }

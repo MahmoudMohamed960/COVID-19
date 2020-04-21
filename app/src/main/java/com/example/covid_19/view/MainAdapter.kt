@@ -1,16 +1,19 @@
 package com.example.covid_19.view
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
+import com.example.covid_19.Constants.Companion.CHART_INTENT
 import com.example.covid_19.Constants.Companion.SHARED_PREF
 import com.example.covid_19.Constants.Companion.SUBSCRIBE_COUNTRY
 import com.example.covid_19.Constants.Companion.SUBSCRIBE_COUNTRY_POS
 import com.example.covid_19.R
 import com.example.covid_19.model.local.CountryData
+import com.google.gson.GsonBuilder
 import kotlinx.android.synthetic.main.country_item.view.*
 
 class MainAdapter(context: Context, list: List<CountryData>) :
@@ -51,6 +54,13 @@ class MainAdapter(context: Context, list: List<CountryData>) :
             val alertDialog: AlertDialog = builder.create()
             alertDialog.setCancelable(false)
             alertDialog.show()
+        }
+        //go to statistics pi chart
+        holder.itemView.setOnClickListener{
+            var json = GsonBuilder().create().toJson(model)
+            var goChart = Intent(context,ChartActivity::class.java)
+            goChart.putExtra(CHART_INTENT,json)
+            context.startActivity(goChart)
         }
     }
 

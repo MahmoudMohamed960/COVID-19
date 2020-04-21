@@ -5,5 +5,5 @@ data class Subscribe(
     val new_cases: String,
     val active_cases: String,
     val total_recovered: String,
-    val total_deaths: String
+    val new_deaths: String
 )

@@ -41,17 +41,15 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProviders.of(this)[MainViewModel::class.java]
         //shared prefrence
         sharedPref = this.getSharedPreferences(Constants.SHARED_PREF, Context.MODE_PRIVATE)
-        worldData = sharedPref?.getString(WORLD_DATA, "")
         //get interval
          time = sharedPref?.getInt(Constants.TIME_INTERVAL,1)
-
         //setup work manager
         setupWorkManaager()
-
-        //get countries cases
         progressBar.visibility = View.VISIBLE
+        // make requests
         requestCountriesCases()
         requestWorldCases()
+        //refresh data
         swip_refresh.setOnRefreshListener(object : SwipeRefreshLayout.OnRefreshListener {
             override fun onRefresh() {
                 var editor = sharedPref?.edit()
@@ -59,11 +57,11 @@ class MainActivity : AppCompatActivity() {
                 editor?.apply()
                 requestCountriesCases()
                 requestWorldCases()
+
             }
 
         })
-
-
+        //change swipRefresh color
         swip_refresh.setColorSchemeColors(
             ContextCompat.getColor(
                 applicationContext,
@@ -98,7 +96,7 @@ class MainActivity : AppCompatActivity() {
         .build()
 
     fun createWorkRequest(data: Data) =
-        PeriodicWorkRequestBuilder<NotificationWorker>(time!!.toLong(), TimeUnit.MINUTES)
+        PeriodicWorkRequestBuilder<NotificationWorker>(time!!.toLong(), TimeUnit.HOURS)
             // set input data for the work
             .setInputData(data)
             .setConstraints(createConstraints())
@@ -114,7 +112,6 @@ class MainActivity : AppCompatActivity() {
     //show data on UI
     fun requestCountriesCases() {
         //observe on  response
-
         viewModel?.getLocalData()?.observe(this, Observer { response ->
             if (response.list != null) {
                 if (response.list!!.size == 0) {
@@ -147,18 +144,21 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun requestWorldCases() {
+        worldData = sharedPref?.getString(WORLD_DATA, "")
         if (!worldData.equals("")) {
             var data = worldData?.split("/")
             var world = WorldData(data!!.get(0), data!!.get(1), data!!.get(2))
             setData(world)
         } else {
             viewModel?.getRemoteData()?.observe(this, Observer { response ->
-                setData(response)
-                var editor = sharedPref?.edit()
-                var data =
-                    response.total_cases + "/" + response.total_recovered + "/" + response.total_deaths
-                editor?.putString(WORLD_DATA, data)
-                editor?.apply()
+                if(!response.total_cases.equals("0")) {
+                    setData(response)
+                    var editor = sharedPref?.edit()
+                    var data =
+                        response.total_cases + "/" + response.total_recovered + "/" + response.total_deaths
+                    editor?.putString(WORLD_DATA, data)
+                    editor?.apply()
+                }
 
             })
         }

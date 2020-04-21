@@ -19,7 +19,7 @@ class CountryActivity : AppCompatActivity() {
         var subscribe = GsonBuilder().create().fromJson(json, Subscribe::class.java)
         recovered_cases.text = subscribe.total_recovered
         new_cases.text = subscribe.new_cases
-        death_cases.text = subscribe.total_deaths
+        death_cases.text = subscribe.new_deaths
         country_name.text = subscribe.country_name
         viewModel = ViewModelProviders.of(this)[MainViewModel::class.java]
         updateData()

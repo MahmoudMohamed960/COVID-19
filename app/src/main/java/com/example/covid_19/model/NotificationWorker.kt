@@ -34,7 +34,7 @@ import kotlin.random.Random
     private var channelID = "ID"
     private var channelName = "name"
     private var countryData: Country? = null
-    var sharedPref: SharedPreferences? = null
+    private var sharedPref: SharedPreferences? = null
     override fun doWork(): Result {
         sharedPref = context.getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE)
         var name = sharedPref?.getString(SUBSCRIBE_COUNTRY, "Egypt")
@@ -79,9 +79,10 @@ import kotlin.random.Random
 
     fun getCountryRequet(data: BaseSubscribe) {
         var model = data.latest_stat_by_country.get(0)
-      if (model != countryData?.toSubscribe() && !model.new_cases.equals(""))
-            getWorldState()
-            showNotification(model)
+      if (model != countryData?.toSubscribe() && !model.new_cases.equals("")) {
+          getWorldState()
+          showNotification(model)
+     }
         specificCountryDispose.clear()
     }
     // get word data
@@ -121,7 +122,7 @@ import kotlin.random.Random
         var intent = PendingIntent.getActivity(context,Random.nextInt(0, 100),openResult,0)
         var ring = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         var builder = NotificationCompat.Builder(context, channelID)
-            .setContentText("new data about ${data.country_name}: new cases ${data.new_cases} ,recoverd ${data.total_recovered} ,death ${data.total_deaths} ")
+            .setContentText("new data about ${data.country_name}: new cases ${data.new_cases} ,recoverd ${data.total_recovered} ,death ${data.new_deaths} ")
             .setContentTitle("Covid-19")
             .setSmallIcon(R.drawable.corona)
             .setSound(ring)
@@ -135,7 +136,7 @@ import kotlin.random.Random
     fun Country.toSubscribe() = Subscribe(
         country_name = country_name,
         new_cases = new_cases,
-        total_deaths = deaths,
+        new_deaths = deaths,
         total_recovered = total_recovered,
         active_cases = active_cases
     )

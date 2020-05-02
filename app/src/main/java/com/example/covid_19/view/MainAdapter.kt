@@ -26,10 +26,7 @@ class MainAdapter(context: Context, list: List<CountryData>) :
         return ViewHolder(view)
     }
 
-    override fun getItemCount(): Int {
-        return list.size
-    }
-
+    override fun getItemCount() = list.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val model = list.get(position)
@@ -46,8 +43,9 @@ class MainAdapter(context: Context, list: List<CountryData>) :
                 val sharedPref = context.getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE)
                 var editor = sharedPref.edit()
                 editor.putString(SUBSCRIBE_COUNTRY, model.country_name)
-                editor.putInt(SUBSCRIBE_COUNTRY_POS,position)
+                editor.putInt(SUBSCRIBE_COUNTRY_POS, position)
                 editor.apply()
+                holder.itemView.subscribe_icon.setImageDrawable(context.resources.getDrawable(R.drawable.ic_pinned))
             }
             builder.setNegativeButton("No") { dialogInterface, which ->
             }
@@ -56,10 +54,10 @@ class MainAdapter(context: Context, list: List<CountryData>) :
             alertDialog.show()
         }
         //go to statistics pi chart
-        holder.itemView.setOnClickListener{
+        holder.itemView.setOnClickListener {
             var json = GsonBuilder().create().toJson(model)
-            var goChart = Intent(context,ChartActivity::class.java)
-            goChart.putExtra(CHART_INTENT,json)
+            var goChart = Intent(context, ChartActivity::class.java)
+            goChart.putExtra(CHART_INTENT, json)
             context.startActivity(goChart)
         }
     }

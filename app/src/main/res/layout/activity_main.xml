@@ -4,30 +4,30 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.MainActivity"
-    android:background="@drawable/background_gradient">
+    android:background="@drawable/background_gradient"
+    tools:context=".view.MainActivity">
 
-<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-    android:id="@+id/swip_refresh"
-    android:layout_width="338dp"
-    android:layout_height="374dp"
-    android:layout_marginStart="40dp"
-    android:layout_marginLeft="40dp"
-    android:layout_marginEnd="40dp"
-    android:layout_marginRight="40dp"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintHorizontal_bias="0.49"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    app:layout_constraintVertical_bias="0.952">
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/country_list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-       />
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swip_refresh"
+        android:layout_width="338dp"
+        android:layout_height="374dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginRight="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.49"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.952">
 
-</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/country_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
@@ -38,8 +38,8 @@
         android:layout_marginTop="90dp"
         android:layout_marginEnd="10dp"
         android:layout_marginRight="10dp"
-        app:cardBackgroundColor="@color/dark_blue"
         android:elevation="0dp"
+        app:cardBackgroundColor="@color/dark_blue"
         app:cardCornerRadius="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.457"
@@ -50,12 +50,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
+            android:fontFamily="@font/montserrat_bold"
             android:gravity="center_horizontal"
             android:text="World cases"
-            android:fontFamily="@font/montserrat_bold"
             android:textColor="@color/white"
-            android:textSize="16sp"
-            />
+            android:textSize="16sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -74,23 +73,23 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
+                    android:fontFamily="@font/helvetica"
                     android:gravity="center"
                     android:text="confirmed"
-                    android:fontFamily="@font/helvetica"
                     android:textColor="@color/white"
-                    android:textSize="16sp"/>
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/confirmed_cases_World"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
+                    android:fontFamily="@font/montserrat_bold"
                     android:gravity="center"
                     android:text="0"
-                    android:fontFamily="@font/montserrat_bold"
                     android:textColor="@color/yellow"
                     android:textSize="16sp"
-                    tools:text="278"/>
+                    tools:text="278" />
             </LinearLayout>
 
             <LinearLayout
@@ -103,20 +102,20 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
+                    android:fontFamily="@font/helvetica"
                     android:gravity="center"
                     android:text="Recovered"
-                    android:fontFamily="@font/helvetica"
                     android:textColor="@color/white"
-                    android:textSize="16sp"/>
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/recovered_cases_World"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
+                    android:fontFamily="@font/montserrat_bold"
                     android:gravity="center"
                     android:text="0"
-                    android:fontFamily="@font/montserrat_bold"
                     android:textColor="@color/green"
                     android:textSize="16sp"
                     tools:text="278" />
@@ -132,9 +131,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
+                    android:fontFamily="@font/helvetica"
                     android:gravity="center"
                     android:text="Death"
-                    android:fontFamily="@font/helvetica"
                     android:textColor="@color/white"
                     android:textSize="16sp" />
 
@@ -143,9 +142,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
+                    android:fontFamily="@font/montserrat_bold"
                     android:gravity="center"
                     android:text="0"
-                    android:fontFamily="@font/montserrat_bold"
                     android:textColor="@color/red"
                     android:textSize="16sp"
                     tools:text="278" />
@@ -159,11 +158,11 @@
         android:layout_width="64dp"
         android:layout_height="58dp"
         android:elevation="2dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/swip_refresh"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:visibility="gone"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/setting_icon"

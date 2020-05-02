@@ -10,7 +10,6 @@ abstract class DBHandeller : RoomDatabase() {
     abstract fun countryDao(): DAO
 
     companion object {
-
         @Volatile
         private var INSTANCE: DBHandeller? = null
 

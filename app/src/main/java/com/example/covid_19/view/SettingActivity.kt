@@ -2,11 +2,12 @@ package com.example.covid_19.view
 
 import android.content.Context
 import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.example.covid_19.Constants.Companion.SETTING_INTENT
 import com.example.covid_19.Constants.Companion.SHARED_PREF
 import com.example.covid_19.Constants.Companion.SUBSCRIBE_COUNTRY
@@ -21,8 +22,9 @@ class SettingActivity : AppCompatActivity() {
     val timeList = (1..24).toList()
     var sharedPref: SharedPreferences? = null
     var countryName: String = ""
-    var position: Int ? =null
+    var position: Int? = null
     var time: Int = 1
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_setting)
@@ -33,11 +35,13 @@ class SettingActivity : AppCompatActivity() {
         //set time spinner
         setTimeList()
         done.setOnClickListener {
+            //save settings on shared prefrence
             var editor = sharedPref?.edit()
             editor?.putString(SUBSCRIBE_COUNTRY, countryName)
             editor?.putInt(TIME_INTERVAL, time)
             position?.let { it -> editor?.putInt(SUBSCRIBE_COUNTRY_POS, it) }
             editor?.apply()
+            Toast.makeText(this,"Saved",Toast.LENGTH_SHORT).show()
             finish()
         }
 
@@ -67,7 +71,6 @@ class SettingActivity : AppCompatActivity() {
                 override fun onNothingSelected(p0: AdapterView<*>?) {
 
                 }
-
                 override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                     countryName = countryList.get(p2)
                     position = p2
@@ -85,15 +88,11 @@ class SettingActivity : AppCompatActivity() {
         time_spinner.adapter = timeAdapter
         time_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(p0: AdapterView<*>?) {
-
             }
-
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                 time = timeList.get(p2)
-
             }
         }
-
     }
 }
 

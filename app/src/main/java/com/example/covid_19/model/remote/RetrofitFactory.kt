@@ -19,7 +19,8 @@ class RetrofitFactory {
             addInterceptor(interceptor)
         }
         val client: OkHttpClient = OkHttpClient().apply {
-            httpBuilder.build()
+            httpBuilder
+                .build()
         }
         val api = Retrofit.Builder()
             .client(client)

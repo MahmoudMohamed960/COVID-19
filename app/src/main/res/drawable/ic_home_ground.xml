@@ -4,27 +4,29 @@
     android:height="640dp"
     android:viewportWidth="358"
     android:viewportHeight="640">
-  <group>
-    <clip-path
-        android:pathData="M0,0h358v640h-358z"/>
-    <path
-        android:pathData="M0,0h358v640h-358z"
-        android:fillColor="#fff"/>
-    <path
-        android:pathData="M0.5,133c0,-0.166 0,-0.334 0.008,-0.5L0.5,132.5L0.5,-0.5L358,-0.5v133h-0.008c0.005,0.166 0.008,0.334 0.008,0.5 0,29 -80.029,52.5 -178.75,52.5S0.5,162 0.5,133Z">
-      <aapt:attr name="android:fillColor">
-        <gradient 
-            android:gradientRadius="355.25488"
-            android:centerX="53.699097"
-            android:centerY="92.7025"
-            android:type="radial">
-          <item android:offset="0" android:color="#FFFFFFFF"/>
-          <item android:offset="1" android:color="#FF185BDF"/>
-        </gradient>
-      </aapt:attr>
-    </path>
-    <path
-        android:pathData="M0,185h358v455h-358z"
-        android:fillColor="#fff"/>
-  </group>
+    <group>
+        <clip-path android:pathData="M0,0h358v640h-358z" />
+        <path
+            android:fillColor="#fff"
+            android:pathData="M0,0h358v640h-358z" />
+        <path android:pathData="M0.5,133c0,-0.166 0,-0.334 0.008,-0.5L0.5,132.5L0.5,-0.5L358,-0.5v133h-0.008c0.005,0.166 0.008,0.334 0.008,0.5 0,29 -80.029,52.5 -178.75,52.5S0.5,162 0.5,133Z">
+            <aapt:attr name="android:fillColor">
+                <gradient
+                    android:centerX="53.699097"
+                    android:centerY="92.7025"
+                    android:gradientRadius="355.25488"
+                    android:type="radial">
+                    <item
+                        android:color="#FFFFFFFF"
+                        android:offset="0" />
+                    <item
+                        android:color="#FF185BDF"
+                        android:offset="1" />
+                </gradient>
+            </aapt:attr>
+        </path>
+        <path
+            android:fillColor="#fff"
+            android:pathData="M0,185h358v455h-358z" />
+    </group>
 </vector>

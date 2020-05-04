@@ -64,7 +64,7 @@ class NotificationWorker(context: Context, pram: WorkerParameters) : Worker(cont
             repo.getSpecificCountry(cName)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
-                .subscribe(this::getCountryRequet)
+                .subscribe(this::getCountryRequest)
                 {
                     print("no internet connection")
                 }
@@ -72,7 +72,7 @@ class NotificationWorker(context: Context, pram: WorkerParameters) : Worker(cont
 
     }
 
-    fun getCountryRequet(data: BaseSubscribe) {
+    fun getCountryRequest(data: BaseSubscribe) {
         var model = data.latest_stat_by_country.get(0)
         if (model != countryData?.toSubscribe() && !model.new_cases.equals("")) {
             getWorldState()

@@ -96,7 +96,7 @@ class MainActivity : AppCompatActivity() {
         .build()
     //make Work request
     fun createWorkRequest(data: Data) =
-        PeriodicWorkRequestBuilder<NotificationWorker>(time!!.toLong(), TimeUnit.MINUTES)
+        PeriodicWorkRequestBuilder<NotificationWorker>(time!!.toLong(), TimeUnit.HOURS)
             // set input data for the work
             .setInputData(data)
             .setConstraints(createConstraints())

@@ -16,7 +16,7 @@
 
         <TextView
             android:id="@+id/country_name"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="10dp"
@@ -28,7 +28,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="10dp"
             android:orientation="vertical"
             android:weightSum="4">
 
@@ -62,35 +62,6 @@
                     tools:text="278" />
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:orientation="horizontal"
-                android:weightSum="2">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/helvetica"
-                    android:text="Confirmed"
-                    android:textColor="@color/black"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:id="@+id/confirmed_cases"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/montserrat_bold"
-                    android:text="0"
-                    android:textColor="@color/yellow"
-                    android:textSize="16sp"
-                    tools:text="278" />
-            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
